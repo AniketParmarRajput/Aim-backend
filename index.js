@@ -1,25 +1,26 @@
 import express from "express";
 import userRoutes from "./src/Routes/userRoute.js";
-import { sequelize } from "./Config/db.js";
+import sequelize from "./Config/db.js";  // ✅ CORRECT
+
 
 const app = express();
 
 // Middleware
 app.use(express.json());
 // Sync the database and tables
-sequelize
-  .sync({ alter: true })
-  .then(() => console.log("Database synced"))
-  .catch((err) => console.error("Error syncing database:", err));
+// sequelize
+//   .sync({ alter: true })
+//   .then(() => console.log("Database synced"))
+//   .catch((err) => console.error("Error syncing database:", err));
 
 // Routes
 app.use("/api/employees", userRoutes);
 
 
 // Database Connection
-sequelize.sync().then(() => {
-  console.log("Database connected");
-});
+// sequelize.sync().then(() => {
+//   console.log("Database connected");
+// });
 
 // Start Server
 app.listen(5000, () => console.log("Server running on port 5000"));
