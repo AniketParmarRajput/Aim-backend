@@ -1,9 +1,11 @@
 import express from "express";
 import userRoutes from "./src/Routes/userRoute.js";
 import sequelize from "./Config/db.js";  // ✅ CORRECT
+import cors from "cors";
 
 
 const app = express();
+app.use(cors({'origin': 'http://localhost:3000'}));
 
 // Middleware
 app.use(express.json());
