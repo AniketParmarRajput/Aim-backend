@@ -27,6 +27,10 @@ const User = sequelize.define(
       type: DataTypes.STRING(255),
       allowNull: false
     },
+    position:{
+      type:DataTypes.STRING(45),
+      allowNull:false
+    },
     createdAt: {
       type: DataTypes.DATE,
       allowNull: false,
