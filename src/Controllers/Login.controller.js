@@ -1,14 +1,14 @@
-
+import User from "../Model/User.model.js"
 export const checkUser =async(req,res) =>{
    try{
-    const {email}=req.body
+    const {email,password}=req.body
     console.log(req.body)
-    if(email == "rajputaniket092@gmail.com"){
-        res.send({message:"logic successfully"})
-    }
-    else{
-        res.send({message:"email is not valid"})
-    }
+    const Useremail =await User.findOne({ where: { email } }) 
+    if(!Useremail) return res.status(400).json({message:"email not found"})
+
+        const vaildpassword =await User.findOne({where:{password}})
+        if(!vaildpassword) return res.status(400).json({message:"password not found"})
+        res.status(200).json({message:"Login Succesfully"})
    }
    catch(err){
     res.send({message:"Error Invalids"})
