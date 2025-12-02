@@ -1,3 +1,5 @@
+import dotenv from "dotenv";
+dotenv.config();
 import express from "express";
 import userRoutes from "./src/Routes/userRoute.js";
 import userlogin from './src/Routes/loginRoute.js'
@@ -6,7 +8,7 @@ import cors from "cors";
 
 
 const app = express();
-app.use(cors({origin:"*"}));
+app.use(cors({ origin: "*" }));
 
 // Middleware
 app.use(express.json());
