@@ -7,5 +7,5 @@ import {
 const router = express.Router();
 
 router.post("/", createEmployee);
-router.get("/", getEmployees);
+router.get("/get", getEmployees);
 export default router;
