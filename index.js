@@ -2,7 +2,8 @@ import dotenv from "dotenv";
 dotenv.config();
 import express from "express";
 import userRoutes from "./src/Routes/userRoute.js";
-import userlogin from './src/Routes/loginRoute.js'
+import userlogin from './src/Routes/loginRoute.js';
+import prizingRoutes from './src/Routes/prizingRoute.js';
 import sequelize from "./Config/db.js";  // ✅ CORRECT
 import cors from "cors";
 
@@ -21,6 +22,7 @@ app.use(express.json());
 // Routes
 app.use("/api/employees", userRoutes);
 app.use("/api/login", userlogin);
+app.use("/api/prizing", prizingRoutes);
 
 
 // Database Connection
