@@ -1,34 +1,48 @@
 import dotenv from "dotenv";
 dotenv.config();
+
 import express from "express";
-import userRoutes from "./src/Routes/userRoute.js";
-import userlogin from './src/Routes/loginRoute.js';
-import prizingRoutes from './src/Routes/prizingRoute.js';
-import sequelize from "./Config/db.js";  // ✅ CORRECT
 import cors from "cors";
 
+// Routes
+import userRoutes from "./src/Routes/userRoute.js";
+import userlogin from "./src/Routes/loginRoute.js";
+import prizingRoutes from "./src/Routes/prizingRoute.js";
+
+// 🔥 IMPORT DB (models auto-loaded here)
+import db from "./src/Model/index.js";
 
 const app = express();
 app.use(cors({ origin: "*" }));
-
-// Middleware
 app.use(express.json());
-// Sync the database and tables
-// sequelize
-//   .sync({ alter: true })
-//   .then(() => console.log("Database synced"))
-//   .catch((err) => console.error("Error syncing database:", err));
 
-// Routes
-app.use("/api/employees", userRoutes);
-app.use("/api/login", userlogin);
-app.use("/api/prizing", prizingRoutes);
+(async () => {
+  try {
+    // ✅ Check DB connection
+    await db.sequelize.authenticate();
+    console.log("✅ MySQL Connected Successfully");
 
+    // 🔍 Debug: kaun-kaun se models load hue
+    console.log(
+      "Loaded Models:",
+      Object.keys(db.sequelize.models)
+    );
 
-// Database Connection
-// sequelize.sync().then(() => {
-//   console.log("Database connected");
-// });
+    // 🔥 Sync AFTER models loaded
+    await db.sequelize.sync();
+    console.log("Database synced");
 
-// Start Server
-app.listen(5000, () => console.log("Server running on port 5000"));
+    // Routes
+    app.use("/api/employees", userRoutes);
+    app.use("/api/login", userlogin);
+    app.use("/api/prizing", prizingRoutes);
+
+    // Start server
+    app.listen(5000, () =>
+      console.log("Server running on port 5000")
+    );
+  } catch (err) {
+    console.error("DB Error:", err);
+  }
+})();
+
