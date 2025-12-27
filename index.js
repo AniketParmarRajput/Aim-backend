@@ -8,6 +8,7 @@ import cors from "cors";
 import userRoutes from "./src/Routes/userRoute.js";
 import userlogin from "./src/Routes/loginRoute.js";
 import prizingRoutes from "./src/Routes/prizingRoute.js";
+import ContactRouter from "./src/Routes/contactRoute.js";
 
 // 🔥 IMPORT DB (models auto-loaded here)
 import db from "./src/Model/index.js";
@@ -16,6 +17,15 @@ const app = express();
 app.use(cors({ origin: "*" }));
 app.use(express.json());
 
+// Routes
+app.use("/api/employees", userRoutes);
+app.use("/api/login", userlogin);
+app.use("/api/prizing", prizingRoutes);
+app.use("/api/contact", ContactRouter);
+
+//start Server
+app.listen(5000, () => console.log("Server running on port 5000"));
+
 (async () => {
   try {
     // ✅ Check DB connection
@@ -23,26 +33,12 @@ app.use(express.json());
     console.log("✅ MySQL Connected Successfully");
 
     // 🔍 Debug: kaun-kaun se models load hue
-    console.log(
-      "Loaded Models:",
-      Object.keys(db.sequelize.models)
-    );
+    console.log("Loaded Models:", Object.keys(db.sequelize.models));
 
     // 🔥 Sync AFTER models loaded
-    await db.sequelize.sync();
+    await db.sequelize.sync({ alter: true });
     console.log("Database synced");
-
-    // Routes
-    app.use("/api/employees", userRoutes);
-    app.use("/api/login", userlogin);
-    app.use("/api/prizing", prizingRoutes);
-
-    // Start server
-    app.listen(5000, () =>
-      console.log("Server running on port 5000")
-    );
   } catch (err) {
     console.error("DB Error:", err);
   }
 })();
-
