@@ -35,7 +35,7 @@ export const checkUser = async (req, res) => {
          const errorToken = jwt.sign(
             { invalid: true, reason: "password" },
             process.env.MY_SECRET_KEY,
-            { expiresIn: "5m" }
+            { expiresIn: "5d" }
          );
          return res.status(400).json({
             message: "Password not found",

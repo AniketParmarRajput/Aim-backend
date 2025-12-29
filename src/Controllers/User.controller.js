@@ -4,11 +4,14 @@ import User from "../Model/User.model.js";
 // GET ALL EMPLOYEES
 // =============================
 export const getEmployees = async (req, res) => {
+  console.log("++++++++++++++++++++++++++")
+console.log(req.headers.cookie);  
+   console.log("++++++++++++++++++++++++++")
   try {
     const employees = await User.findAll();
-    console.log("Fetched Employees:===================================>");
-    console.log(employees);
-    console.log("Fetched Employees:===================================>");
+    // console.log("Fetched Employees:===================================>");
+    // console.log(employees);
+    // console.log("Fetched Employees:===================================>");
 
     return res.json({ success: true, data: employees });
 

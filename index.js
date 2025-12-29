@@ -3,22 +3,25 @@ dotenv.config();
 
 import express from "express";
 import cors from "cors";
-
+import cookieParser from "cookie-parser";
 // Routes
 import userRoutes from "./src/Routes/userRoute.js";
 import userlogin from "./src/Routes/loginRoute.js";
 import prizingRoutes from "./src/Routes/prizingRoute.js";
 import ContactRouter from "./src/Routes/contactRoute.js";
+import isverify from "./src/MiddleWare/Auth.js";
+
 
 // 🔥 IMPORT DB (models auto-loaded here)
 import db from "./src/Model/index.js";
 
 const app = express();
-app.use(cors({ origin: "*" }));
+app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 app.use(express.json());
+app.use(cookieParser());
 
 // Routes
-app.use("/api/employees", userRoutes);
+app.use("/api/employees", isverify, userRoutes);
 app.use("/api/login", userlogin);
 app.use("/api/prizing", prizingRoutes);
 app.use("/api/contact", ContactRouter);
