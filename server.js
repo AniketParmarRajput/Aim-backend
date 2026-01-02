@@ -14,7 +14,9 @@ import ContactRouter from "./src/Routes/contactRoute.js";
 import db from "./src/Model/index.js";
 
 const app = express();
-app.use(cors({ origin: "*" }));
+// app.use(cors({ origin: "*" }));
+app.use(cors({ origin: true }));
+
 app.use(express.json());
 
 // Routes
