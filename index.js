@@ -21,7 +21,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 // Routes
-app.use("/api/employees", isverify, userRoutes);
+app.use("/api/employees",userRoutes);
 app.use("/api/login", userlogin);
 app.use("/api/prizing", prizingRoutes);
 app.use("/api/contact", ContactRouter);
