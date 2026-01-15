@@ -16,12 +16,17 @@ import isverify from "./src/MiddleWare/Auth.js";
 import db from "./src/Model/index.js";
 
 const app = express();
-app.use(cors({ origin: "*",  }));
+app.use(cors({
+  origin: ["http://localhost:3000", "https://aim-alpha-hazel.vercel.app"],
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}));
+
 app.use(express.json());
 app.use(cookieParser());
 
 // Routes
-app.use("/api/employees",userRoutes);
+app.use("/api/employees", userRoutes);
 app.use("/api/login", userlogin);
 app.use("/api/prizing", prizingRoutes);
 app.use("/api/contact", ContactRouter);
@@ -45,3 +50,4 @@ app.listen(5000, () => console.log("Server running on port 5000"));
     console.error("DB Error:", err);
   }
 })();
+
