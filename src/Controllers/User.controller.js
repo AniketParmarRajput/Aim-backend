@@ -5,8 +5,8 @@ import User from "../Model/User.model.js";
 // =============================
 export const getEmployees = async (req, res) => {
   console.log("++++++++++++++++++++++++++")
-console.log(req.headers.cookie);  
-   console.log("++++++++++++++++++++++++++")
+  console.log(req.headers.cookie);
+  console.log("++++++++++++++++++++++++++")
   try {
     const employees = await User.findAll();
     // console.log("Fetched Employees:===================================>");
@@ -25,7 +25,7 @@ console.log(req.headers.cookie);
 // =============================
 export const createEmployee = async (req, res) => {
   try {
-    const { name, email, role, position,password } = req.body;
+    const { name, email, role, position, password } = req.body;
     console.log("Creating Employee with data: ", req.body);
 
     // Validate required fields
@@ -36,7 +36,7 @@ export const createEmployee = async (req, res) => {
     }
 
     // Create employee
-    const newEmployee = await User.create({ name, email, role, position,password });
+    const newEmployee = await User.create({ name, email, role, position, password });
 
     return res.status(201).json({ success: true, data: newEmployee });
 
@@ -45,7 +45,23 @@ export const createEmployee = async (req, res) => {
   }
 };
 
+export const deleteEmployee = async (req, res) => {
+  console.log(req.params);
+  try {
+    const { id } = req.params;
+    const deleted = await User.destroy({ where: { id: id } });
+    if (deleted) {
+      return res.status(200).json({ success: true, message: "Employee deleted successfully" });
+    } else {
+      return res.status(404).json({ success: false, message: "Employee not found" });
+    }
+  }
+  catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+}
+
 // =============================
 // Export as default object
 // =============================
-export default { getEmployees, createEmployee };
+export default { getEmployees, createEmployee, deleteEmployee };

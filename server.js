@@ -62,7 +62,7 @@ import db from "./src/Model/index.js";
 const app = express();
 
 // Middlewares
-app.use(cors({ origin: true }));
+app.use(cors({ origin: "http://localhost:3000" }));
 app.use(express.json());
 
 // Routes
