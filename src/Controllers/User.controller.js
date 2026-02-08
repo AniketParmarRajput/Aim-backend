@@ -6,9 +6,6 @@ import User from "../Model/User.model.js";
 export const getEmployees = async (req, res) => {
   try {
     const employees = await User.findAll();
-    // console.log("Fetched Employees:===================================>");
-    // console.log(employees);
-    // console.log("Fetched Employees:===================================>");
 
     return res.json({ success: true, data: employees });
 
@@ -23,7 +20,6 @@ export const getEmployees = async (req, res) => {
 export const createEmployee = async (req, res) => {
   try {
     const { name, email, role, position, password } = req.body;
-    console.log("Creating Employee with data: ", req.body);
 
     // Validate required fields
     if (!name || !email || !role || !position || !password) {
@@ -43,9 +39,7 @@ export const createEmployee = async (req, res) => {
 };
 
 export const deleteEmployee = async (req, res) => {
-  console.log("++++++++++++++++++")
   console.log(req.params);
-   console.log("++++++++++++++++++")
   try {
     const { id } = req.params;
     const deleted = await User.destroy({ where: { id: id } });
