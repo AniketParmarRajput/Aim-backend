@@ -1,4 +1,5 @@
 import Joi from "joi";
+import { singularize } from "sequelize/lib/utils";
 
 const signupSchema = Joi.object({
   name: Joi.string().min(2).max(50).required(),
@@ -63,4 +64,4 @@ const loginvalidation =(req,res, next) =>{
     }
 }
 
-export default signupValidation;
+export default{signupValidation, loginvalidation}
