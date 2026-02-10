@@ -1,5 +1,4 @@
 import Joi from "joi";
-import { singularize } from "sequelize/lib/utils";
 
 const signupSchema = Joi.object({
   name: Joi.string().min(2).max(50).required(),
@@ -14,7 +13,7 @@ const loginSchema = Joi.object({
 
 })
 
-const signupValidation = (req, res, next) => {
+export const signupValidation = (req, res, next) => {
   try {
     const { error, value } = signupSchema.validate(req.body, {
       abortEarly: true
@@ -40,7 +39,7 @@ const signupValidation = (req, res, next) => {
   }
 };
 
-const loginvalidation =(req,res, next) =>{
+export const loginvalidation =(req,res, next) =>{
     try{
         const {error, value} =loginSchema.validate(req.body,{
             abortEarly
@@ -64,4 +63,3 @@ const loginvalidation =(req,res, next) =>{
     }
 }
 
-export default{signupValidation, loginvalidation}

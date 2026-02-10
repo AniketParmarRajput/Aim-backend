@@ -4,7 +4,8 @@ import {
   createEmployee,
   deleteEmployee
 } from "../Controllers/User.controller.js";
-import signupValidation from "../MiddleWare/Valid.js";
+import {signupValidation} from "../MiddleWare/Valid.js"
+
 
 const router = express.Router();
 
