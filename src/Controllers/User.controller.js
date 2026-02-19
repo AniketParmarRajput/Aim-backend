@@ -53,8 +53,30 @@ export const deleteEmployee = async (req, res) => {
     return res.status(500).json({ success: false, message: error.message });
   }
 }
+export const getByEmployeeID = async (req,res) =>{
+  console.log(req.params);
+  try{
+    const {id} =req.params;
+    const employees = await User.findOne({
+        where: { id: id }
+    })
+    if(!employees){
+    return res.status(404).json({success:false,  message: "Employee not found"})
+    }
+    return res.status(200).json({
+      success:true,
+      data:employees,
+     message: "Fetched successfully"
+    })
+
+  }catch(error){
+return res.status(500).json({success:false, message:error.message})
+  }
+  
+
+}
 
 // =============================
 // Export as default object
 // =============================
-export default { getEmployees, createEmployee, deleteEmployee };
+export default { getEmployees, createEmployee, deleteEmployee,getByEmployeeID };
