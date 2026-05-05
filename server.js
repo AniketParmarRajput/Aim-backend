@@ -6,7 +6,7 @@ import cors from "cors";
 
 // Routes
 import userRoutes from "./src/Routes/userRoute.js";
-import userlogin from "./src/Routes/loginRoute.js";
+import loginRoutes from "./src/Routes/loginRoute.js";
 import prizingRoutes from "./src/Routes/prizingRoute.js";
 import ContactRouter from "./src/Routes/contactRoute.js";
 
@@ -21,7 +21,7 @@ app.use(express.json());
 
 // Routes
 app.use("/api/employees", userRoutes);
-app.use("/api/login", userlogin);
+app.use("/api/login", loginRoutes);
 app.use("/api/prizing", prizingRoutes);
 app.use("/api/contact", ContactRouter);
 
