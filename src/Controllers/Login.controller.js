@@ -49,10 +49,20 @@ export const checkUser = async (req, res) => {
          process.env.MY_SECRET_KEY,
          { expiresIn: "1d" }
       );
+        res.cookie("token", token, {
+         httpOnly: true,     // cannot be accessed via JS (secure)
+         secure: false,      // true in production (HTTPS)
+         sameSite: "lax",
+         maxAge: 24 * 60 * 60 * 1000 // 1 day
+      });
 
       res.status(200).json({
          message: "Login Successfully",
          token,
+          user: {
+      id: user.id,
+      email: user.email
+   }
       });
 
    } catch (err) {

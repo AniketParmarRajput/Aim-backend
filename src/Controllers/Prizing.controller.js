@@ -37,8 +37,9 @@ export const addPrizing = async (req, res) => {
 };
 export const getPrizing = async(req,res) =>{
     try{
-        const prizing = Prizing.findAll();
-        res.status(200).json({success:"true", message:"done",data:prizing})
+        const prizing = await Prizing.findAll();
+        console.log(prizing);
+        res.status(200).json({success:"true", message:"done", data:prizing})
     }
     catch(err){
         res.status(500).json({success:"false", message:"internal error"})
