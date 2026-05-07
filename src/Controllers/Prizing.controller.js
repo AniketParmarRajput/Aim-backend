@@ -46,4 +46,18 @@ export const getPrizing = async(req,res) =>{
     }
 }
 
-export default { addPrizing , getPrizing};
+ export const getPrizingById = async(req,res) =>{
+    try{
+        const {id} = req.params;
+        const prizing = await Prizing.findByPk(id);
+        if(!prizing){
+            return res.status(404).json({success:"false", message:"prizing not found"})
+        }
+        res.status(200).json({success:"true", message:"done", data:prizing})
+    }
+    catch(err){
+        res.status(500).json({success:"false", message:"internal error"})
+    }
+}
+
+export default { addPrizing , getPrizing, getPrizingById};
