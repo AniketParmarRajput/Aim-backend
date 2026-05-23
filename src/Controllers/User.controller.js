@@ -44,6 +44,23 @@ export const createEmployee = async (req, res) => {
   }
 };
 
+export const updatePassword = async (req, res) => {
+  try {
+    console.log(req.body);
+
+    return res.status(200).json({
+      success: true,
+      message: "Password updated successfully",
+      data: req.body,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 export const deleteEmployee = async (req, res) => {
   console.log(req.params);
   try {
@@ -59,6 +76,7 @@ export const deleteEmployee = async (req, res) => {
     return res.status(500).json({ success: false, message: error.message });
   }
 }
+
 export const getByEmployeeID = async (req,res) =>{
   console.log(req.params);
   try{
@@ -85,4 +103,4 @@ return res.status(500).json({success:false, message:error.message})
 // =============================
 // Export as default object
 // =============================
-export default { getEmployees, createEmployee, deleteEmployee,getByEmployeeID };
+export default { getEmployees, createEmployee, deleteEmployee,getByEmployeeID , updatePassword};
