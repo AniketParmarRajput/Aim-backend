@@ -9,7 +9,7 @@ export const sendWelcomeEmail = async (email, name) => {
       subject: "Welcome",
       html: `
         <h2>Hello ${name}</h2>
-        <p>Welcome to our company.</p>
+        <p>Welcome to our website!</p>
       `,
     });
 
