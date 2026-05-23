@@ -1,4 +1,5 @@
 import User from "../Model/User.model.js";
+import  {sendWelcomeEmail}  from "../utils/sendWelcomeEmail.js";
 
 // =============================
 // GET ALL EMPLOYEES
@@ -30,6 +31,11 @@ export const createEmployee = async (req, res) => {
 
     // Create employee
     const newEmployee = await User.create({ name, email, role, position, password });
+    
+     await sendWelcomeEmail(
+      email,
+      name
+    );
 
     return res.status(201).json({ success: true, data: newEmployee });
 

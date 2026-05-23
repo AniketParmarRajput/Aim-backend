@@ -10,6 +10,7 @@ import userRoutes from "./src/Routes/userRoute.js";
 import loginRoutes from "./src/Routes/loginRoute.js";
 import prizingRoutes from "./src/Routes/prizingRoute.js";
 import ContactRouter from "./src/Routes/contactRoute.js";
+ import geminiRoutes from "./src/Routes/geminiRoute.js";
 
 
 // DB (Sequelize instance + models)
@@ -29,6 +30,7 @@ app.use("/api/employees", userRoutes);
 app.use("/api/login", loginRoutes);
 app.use("/api/prizing", prizingRoutes);
 app.use("/api/contact", ContactRouter);
+app.use("/api/gemini", geminiRoutes);
 
 // ✅ Database + Server bootstrap
 const startServer = async () => {
