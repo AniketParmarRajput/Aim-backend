@@ -10,6 +10,8 @@ import userlogin from "./src/Routes/loginRoute.js";
 import prizingRoutes from "./src/Routes/prizingRoute.js";
 import ContactRouter from "./src/Routes/contactRoute.js";
 import isverify from "./src/MiddleWare/Auth.js";
+import paypalRoutes from "./src/Routes/paypalRoute.js";
+
 
 
 // 🔥 IMPORT DB (models auto-loaded here)
@@ -30,6 +32,7 @@ app.use("/api/employees", userRoutes);
 app.use("/api/login", userlogin);
 app.use("/api/prizing", prizingRoutes);
 app.use("/api/contact", ContactRouter);
+app.use("/api/paypal", paypalRoutes);
 
 //start Server
 app.listen(5000, () => console.log("Server running on port 5000"));
