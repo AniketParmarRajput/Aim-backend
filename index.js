@@ -9,7 +9,6 @@ import userRoutes from "./src/Routes/userRoute.js";
 import userlogin from "./src/Routes/loginRoute.js";
 import prizingRoutes from "./src/Routes/prizingRoute.js";
 import ContactRouter from "./src/Routes/contactRoute.js";
-import isverify from "./src/MiddleWare/Auth.js";
 import paypalRoutes from "./src/Routes/paypalRoute.js";
 
 
