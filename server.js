@@ -11,7 +11,7 @@ import loginRoutes from "./src/Routes/loginRoute.js";
 import prizingRoutes from "./src/Routes/prizingRoute.js";
 import ContactRouter from "./src/Routes/contactRoute.js";
  import geminiRoutes from "./src/Routes/geminiRoute.js";
- import paypalRoutes from "./src/Routes/paypalRoute.js";
+//  import paypalRoutes from "./src/Routes/paypalRoute.js";
 
 
 // DB (Sequelize instance + models)
@@ -36,7 +36,7 @@ app.use("/api/login", loginRoutes);
 app.use("/api/prizing", prizingRoutes);
 app.use("/api/contact", ContactRouter);
 app.use("/api/gemini", geminiRoutes);
-app.use("/api/paypal", paypalRoutes);
+// app.use("/api/paypal", paypalRoutes);
 
 // ✅ Database + Server bootstrap
 const startServer = async () => {
