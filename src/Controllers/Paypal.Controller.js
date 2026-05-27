@@ -1,221 +1,221 @@
-// import paypal from "@paypal/checkout-server-sdk";
-// import db from "../../Config/db.js";
+import paypal from "@paypal/checkout-server-sdk";
+import db from "../../Config/db.js";
 
 
 
 
-// // PAYPAL ENVIRONMENT
+// PAYPAL ENVIRONMENT
 
-// const environment =
-// new paypal.core.SandboxEnvironment(
+const environment =
+new paypal.core.SandboxEnvironment(
 
-//   process.env.PAYPAL_CLIENT_ID,
+  process.env.PAYPAL_CLIENT_ID,
 
-//   process.env.PAYPAL_CLIENT_SECRET
+  process.env.PAYPAL_CLIENT_SECRET
 
-// );
-// console.log("++++++++++++++++++++++")
-// console.log(process.env.PAYPAL_CLIENT_ID, process.env.PAYPAL_CLIENT_SECRET)
-// console.log("++++++++++++++++++++++")
+);
+console.log("++++++++++++++++++++++")
+console.log(process.env.PAYPAL_CLIENT_ID, process.env.PAYPAL_CLIENT_SECRET)
+console.log("++++++++++++++++++++++")
 
 
 
-// // PAYPAL CLIENT
+// PAYPAL CLIENT
 
-// const client =
-// new paypal.core.PayPalHttpClient(environment);
+const client =
+new paypal.core.PayPalHttpClient(environment);
 
 
 
 
 
-// // CREATE ORDER
+// CREATE ORDER
 
-// export const createOrder = async (req, res) => {
+export const createOrder = async (req, res) => {
 
-//   try {
+  try {
 
-//     const { amount, itemName } = req.body;
-// console.log(req.body)
+    const { amount, itemName } = req.body;
+console.log(req.body)
 
-//     const request =
-//     new paypal.orders.OrdersCreateRequest();
+    const request =
+    new paypal.orders.OrdersCreateRequest();
 
-//     request.prefer("return=representation");
+    request.prefer("return=representation");
 
 
-//     request.requestBody({
+    request.requestBody({
 
-//       intent: "CAPTURE",
+      intent: "CAPTURE",
 
-//       purchase_units: [
+      purchase_units: [
 
-//         {
+        {
 
-//           description: itemName,
+          description: itemName,
 
-//           amount: {
+          amount: {
 
-//             currency_code: "USD",
+            currency_code: "USD",
 
-//             value: amount.toString(),
+            value: amount.toString(),
 
-//           },
-//         },
-//       ],
-//     });
+          },
+        },
+      ],
+    });
 
 
-//     const order =
-//     await client.execute(request);
+    const order =
+    await client.execute(request);
 
 
-//     res.json({
+    res.json({
 
-//       id: order.result.id,
+      id: order.result.id,
 
-//     });
+    });
 
-//   } catch (err) {
+  } catch (err) {
 
-//     console.log(err);
+    console.log(err);
 
-//     res.status(500).json({
+    res.status(500).json({
 
-//       message: "Create Order Failed",
+      message: "Create Order Failed",
 
-//     });
-//   }
-// };
+    });
+  }
+};
 
 
 
-// export const captureOrder = async (req, res) => {
+export const captureOrder = async (req, res) => {
 
-//   try {
+  try {
 
-//     const { orderID } = req.body;
+    const { orderID } = req.body;
 
 
-//     const request =
-//     new paypal.orders.OrdersCaptureRequest(orderID);
+    const request =
+    new paypal.orders.OrdersCaptureRequest(orderID);
 
-//     request.requestBody({});
+    request.requestBody({});
 
 
-//     const capture =
-//     await client.execute(request);
+    const capture =
+    await client.execute(request);
 
 
 
-//     // EXTRACT DATA
+    // EXTRACT DATA
 
-//     const paymentID =
-//     capture.result.purchase_units[0]
-//     .payments.captures[0].id;
+    const paymentID =
+    capture.result.purchase_units[0]
+    .payments.captures[0].id;
 
-//     const payerEmail =
-//     capture.result.payer.email_address;
+    const payerEmail =
+    capture.result.payer.email_address;
 
-//     const amount =
-//     capture.result.purchase_units[0]
-//     .payments.captures[0]
-//     .amount.value;
+    const amount =
+    capture.result.purchase_units[0]
+    .payments.captures[0]
+    .amount.value;
 
-//     const currency =
-//     capture.result.purchase_units[0]
-//     .payments.captures[0]
-//     .amount.currency_code;
+    const currency =
+    capture.result.purchase_units[0]
+    .payments.captures[0]
+    .amount.currency_code;
 
-//     const status =
-//     capture.result.status;
+    const status =
+    capture.result.status;
 
 
 
 
 
-//     // SAVE SQL DATABASE
+    // SAVE SQL DATABASE
 
-//     const sql = `
+    const sql = `
 
-//       INSERT INTO payments
+      INSERT INTO payments
 
-//       (
+      (
 
-//         order_id,
+        order_id,
 
-//         payment_id,
+        payment_id,
 
-//         payer_email,
+        payer_email,
 
-//         amount,
+        amount,
 
-//         currency,
+        currency,
 
-//         status
+        status
 
-//       )
+      )
 
-//       VALUES (?, ?, ?, ?, ?, ?)
+      VALUES (?, ?, ?, ?, ?, ?)
 
-//     `;
+    `;
 
 
-//     db.query(
+    db.query(
 
-//       sql,
+      sql,
 
-//       [
+      [
 
-//         orderID,
+        orderID,
 
-//         paymentID,
+        paymentID,
 
-//         payerEmail,
+        payerEmail,
 
-//         amount,
+        amount,
 
-//         currency,
+        currency,
 
-//         status,
+        status,
 
-//       ],
+      ],
 
-//       (err, result) => {
+      (err, result) => {
 
-//         if (err) {
+        if (err) {
 
-//           console.log(err);
+          console.log(err);
 
-//           return res.status(500).json({
+          return res.status(500).json({
 
-//             message: "Database Error",
+            message: "Database Error",
 
-//           });
-//         }
+          });
+        }
 
 
-//         res.json({
+        res.json({
 
-//           success: true,
+          success: true,
 
-//           payment: capture.result,
+          payment: capture.result,
 
-//         });
-//       }
-//     );
+        });
+      }
+    );
 
-//   } catch (err) {
+  } catch (err) {
 
-//     console.log(err);
+    console.log(err);
 
-//     res.status(500).json({
+    res.status(500).json({
 
-//       message: "Capture Failed",
+      message: "Capture Failed",
 
-//     });
-//   }
-// };
+    });
+  }
+};
 
 
-//  export  default { createOrder, captureOrder };
+ export  default { createOrder, captureOrder };
