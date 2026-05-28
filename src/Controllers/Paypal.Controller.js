@@ -1,5 +1,5 @@
 import paypal from "@paypal/checkout-server-sdk";
-import db from "../../Config/db.js";
+import db from "../Model/index.js";
 
 
 
@@ -134,76 +134,43 @@ export const captureOrder = async (req, res) => {
 
 
 
-    // SAVE SQL DATABASE
+    // SAVE TO DATABASE USING SEQUELIZE MODEL
 
-    const sql = `
+    try {
 
-      INSERT INTO payments
+      await db.PaypalPayment.create({
 
-      (
+        orderID: orderID,
 
-        order_id,
+        paymentID: paymentID,
 
-        payment_id,
+        payerEmail: payerEmail,
 
-        payer_email,
+        amount: amount,
 
-        amount,
+        currency: currency,
 
-        currency,
+        status: status,
 
-        status
+      });
 
-      )
+      res.json({
 
-      VALUES (?, ?, ?, ?, ?, ?)
+        success: true,
 
-    `;
+        payment: capture.result,
 
+      });
+    } catch (err) {
 
-    db.query(
+      console.log(err);
 
-      sql,
+      return res.status(500).json({
 
-      [
+        message: "Database Error",
 
-        orderID,
-
-        paymentID,
-
-        payerEmail,
-
-        amount,
-
-        currency,
-
-        status,
-
-      ],
-
-      (err, result) => {
-
-        if (err) {
-
-          console.log(err);
-
-          return res.status(500).json({
-
-            message: "Database Error",
-
-          });
-        }
-
-
-        res.json({
-
-          success: true,
-
-          payment: capture.result,
-
-        });
-      }
-    );
+      });
+    }
 
   } catch (err) {
 
