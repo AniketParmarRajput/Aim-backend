@@ -18,7 +18,7 @@ import db from "./src/Model/index.js";
 
 const app = express();
 app.use(cors({
-  origin: ["http://localhost:3000", "https://aim-alpha-hazel.vercel.app"],
+  origin: ["http://localhost:3001", "https://aim-alpha-hazel.vercel.app"],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));

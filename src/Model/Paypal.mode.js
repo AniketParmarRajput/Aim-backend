@@ -88,6 +88,10 @@ const PaypalPayment = sequelize.define(
 
       allowNull: true,
     },
+    quantity: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
 
   },
 

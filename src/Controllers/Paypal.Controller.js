@@ -14,10 +14,6 @@ new paypal.core.SandboxEnvironment(
   process.env.PAYPAL_CLIENT_SECRET
 
 );
-console.log("++++++++++++++++++++++")
-console.log(process.env.PAYPAL_CLIENT_ID, process.env.PAYPAL_CLIENT_SECRET)
-console.log("++++++++++++++++++++++")
-
 
 
 // PAYPAL CLIENT
@@ -35,7 +31,7 @@ export const createOrder = async (req, res) => {
 
   try {
 
-    const { amount, itemName } = req.body;
+    const { amount, itemName, quantity  } = req.body;
 console.log(req.body)
 
     const request =
@@ -53,10 +49,13 @@ console.log(req.body)
         {
 
           description: itemName,
+           custom_id: JSON.stringify({
+            quantity,
+          }),
 
           amount: {
 
-            currency_code: "USD",
+            currency_code: "INR",
 
             value: amount.toString(),
 
@@ -94,7 +93,7 @@ export const captureOrder = async (req, res) => {
 
   try {
 
-    const { orderID } = req.body;
+    const { orderID,quantity   } = req.body;
 
 
     const request =
@@ -151,6 +150,8 @@ export const captureOrder = async (req, res) => {
         currency: currency,
 
         status: status,
+
+        quantity: quantity,
 
       });
 
