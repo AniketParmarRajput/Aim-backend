@@ -55,7 +55,7 @@ console.log(req.body)
 
           amount: {
 
-            currency_code: "INR",
+            currency_code: "USD",
 
             value: amount.toString(),
 
