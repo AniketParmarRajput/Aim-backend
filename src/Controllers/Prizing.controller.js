@@ -1,13 +1,20 @@
 import Prizing from "../Model/Prizing.model.js";
 
+const generateSku = async (itemName, category) => {
+    const first = (itemName || "X").charAt(0).toUpperCase();
+    const second = (category || "X").charAt(0).toUpperCase();
+    const prefix = first + second;
+    const count = await Prizing.count();
+    const num = String(count + 1).padStart(3, "0");
+    return prefix + num;
+};
+
 export const addPrizing = async (req, res) => {
     try {
-        const { itemName, amount, description } = req.body;
+        const { itemName, amount, description, category, discount, badge, colour, stock, sku: bodySku, active: bodyActive } = req.body;
 
-        // multer puts file info in req.file
         const image = req.file ? req.file.path : null;
 
-        // Validation
         if (!itemName || !amount || !description || !image) {
             return res.status(400).json({
                 success: false,
@@ -15,11 +22,21 @@ export const addPrizing = async (req, res) => {
             });
         }
 
+        const sku = bodySku || (await generateSku(itemName, category));
+        const active = bodyActive !== undefined ? bodyActive === true || bodyActive === "true" : true;
+
         const createPrizing = await Prizing.create({
             itemName,
             amount,
             description,
-            image
+            image,
+            category,
+            discount,
+            badge,
+            colour,
+            stock,
+            sku,
+            active
         });
 
         return res.status(201).json({
@@ -60,4 +77,63 @@ export const getPrizing = async(req,res) =>{
     }
 }
 
-export default { addPrizing , getPrizing, getPrizingById};
+export const updatePrizing = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { itemName, amount, description, category, discount, badge, colour, stock, active } = req.body;
+        const image = req.file ? req.file.path : undefined;
+
+        const product = await Prizing.findByPk(id);
+        if (!product) {
+            return res.status(404).json({ success: false, message: "Product not found" });
+        }
+
+        const updateData = {};
+        if (itemName) updateData.itemName = itemName;
+        if (amount) updateData.amount = amount;
+        if (description) updateData.description = description;
+        if (category) updateData.category = category;
+        if (discount) updateData.discount = discount;
+        if (badge) updateData.badge = badge;
+        if (colour) updateData.colour = colour;
+        if (stock !== undefined) updateData.stock = stock;
+        if (active !== undefined) updateData.active = active === true || active === "true";
+        if (image) updateData.image = image;
+
+        await product.update(updateData);
+
+        return res.status(200).json({ success: true, message: "Product updated successfully", data: product });
+    } catch (error) {
+        return res.status(500).json({ success: false, message: error.message });
+    }
+};
+
+export const deletePrizing = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const product = await Prizing.findByPk(id);
+        if (!product) {
+            return res.status(404).json({ success: false, message: "Product not found" });
+        }
+        await product.destroy();
+        return res.status(200).json({ success: true, message: "Product deleted successfully" });
+    } catch (error) {
+        return res.status(500).json({ success: false, message: error.message });
+    }
+};
+
+export const toggleActive = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const product = await Prizing.findByPk(id);
+        if (!product) {
+            return res.status(404).json({ success: false, message: "Product not found" });
+        }
+        const updated = await product.update({ active: !product.active });
+        return res.status(200).json({ success: true, message: "Status updated", data: updated });
+    } catch (error) {
+        return res.status(500).json({ success: false, message: error.message });
+    }
+};
+
+export default { addPrizing, getPrizing, getPrizingById, updatePrizing, deletePrizing, toggleActive };
