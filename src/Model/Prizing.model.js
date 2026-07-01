@@ -25,6 +25,37 @@ const Prizing = sequelize.define(
       type: DataTypes.JSON,
       allowNull: false,
     },
+    category: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+    },
+    discount: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
+    badge: {
+      type: DataTypes.STRING(50),
+      allowNull: true,
+    },
+    colour: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+    },
+    stock: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      defaultValue: 0,
+    },
+    sku: {
+      type: DataTypes.STRING(50),
+      allowNull: true,
+      unique: true,
+    },
+    active: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: true,
+    },
   },
   {
     freezeTableName: "prizing",
