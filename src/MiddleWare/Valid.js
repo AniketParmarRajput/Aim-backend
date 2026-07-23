@@ -8,9 +8,8 @@ const signupSchema = Joi.object({
   password: Joi.string().min(8).required()
 });
 const loginSchema = Joi.object({
-      email: Joi.string().email().required(),
-         position: Joi.string().required(),
-
+  email: Joi.string().email().required(),
+  password: Joi.string().required()
 })
 
 export const signupValidation = (req, res, next) => {
@@ -41,8 +40,8 @@ export const signupValidation = (req, res, next) => {
 
 export const loginvalidation =(req,res, next) =>{
     try{
-        const {error, value} =loginSchema.validate(req.body,{
-            abortEarly
+        const {error, value} = loginSchema.validate(req.body, {
+          abortEarly: true
         });
         if(error){
             return res.status(400).json({
@@ -54,7 +53,7 @@ export const loginvalidation =(req,res, next) =>{
         next();
 
 
-    }catch(error){
+    }catch(err){
         console.error(err);
     return res.status(500).json({
       success: false,

@@ -29,8 +29,7 @@ export const checkUser = async (req, res) => {
          });
       }
 
-      const validPassword = await User.findOne({ where: { password } });
-      if (!validPassword) {
+      if (user.password !== password) {
          // ❗ Token for invalid password
          const errorToken = jwt.sign(
             { invalid: true, reason: "password" },
@@ -61,7 +60,8 @@ export const checkUser = async (req, res) => {
          token,
           user: {
       id: user.id,
-      email: user.email
+      email: user.email,
+      role: user.role
    }
       });
 

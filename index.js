@@ -10,6 +10,7 @@ import userlogin from "./src/Routes/loginRoute.js";
 import prizingRoutes from "./src/Routes/prizingRoute.js";
 import ContactRouter from "./src/Routes/contactRoute.js";
 import paypalRoutes from "./src/Routes/paypalRoute.js";
+import orderRoutes from "./src/Routes/orderRoute.js";
 
 
 
@@ -32,24 +33,19 @@ app.use("/api/login", userlogin);
 app.use("/api/prizing", prizingRoutes);
 app.use("/api/contact", ContactRouter);
 app.use("/api/paypal", paypalRoutes);
-
-//start Server
-app.listen(5000, () => console.log("Server running on port 5000"));
+app.use("/api/order", orderRoutes);
 
 (async () => {
   try {
-    // ✅ Check DB connection
     await db.sequelize.authenticate();
     console.log("✅ MySQL Connected Successfully");
-
-    // 🔍 Debug: kaun-kaun se models load hue
     console.log("Loaded Models:", Object.keys(db.sequelize.models));
-
-    // 🔥 Sync AFTER models loaded
     await db.sequelize.sync({ alter: true });
     console.log("Database synced");
   } catch (err) {
     console.error("DB Error:", err);
   }
+
+  app.listen(5000, () => console.log("Server running on port 5000"));
 })();
 
