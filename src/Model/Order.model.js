@@ -53,6 +53,18 @@ const Order = sequelize.define(
       type: DataTypes.TEXT,
       allowNull: true,
     },
+    state: {
+      type: DataTypes.STRING(100),
+      allowNull: true,
+    },
+    district: {
+      type: DataTypes.STRING(100),
+      allowNull: true,
+    },
+    pincode: {
+      type: DataTypes.STRING(10),
+      allowNull: true,
+    },
     mobile: {
       type: DataTypes.STRING(20),
       allowNull: true,

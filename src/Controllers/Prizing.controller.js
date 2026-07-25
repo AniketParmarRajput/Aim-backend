@@ -1,4 +1,11 @@
+import { v2 as cloudinary } from "cloudinary";
 import Prizing from "../Model/Prizing.model.js";
+
+cloudinary.config({
+  cloud_name: "dviokng6d",
+  api_key: "187969885516314",
+  api_secret: "qGctzEPVAxK9UDeiqQqJIEUfhwk",
+});
 
 const generateSku = async (itemName, category) => {
     const first = (itemName || "X").charAt(0).toUpperCase();
@@ -13,7 +20,15 @@ export const addPrizing = async (req, res) => {
     try {
         const { itemName, amount, description, category, discount, badge, colour, stock, sku: bodySku, active: bodyActive } = req.body;
 
-        const image = req.file ? req.file.path : null;
+        let image = null;
+        if (req.file) {
+          const b64 = `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`;
+          const result = await cloudinary.uploader.upload(b64, {
+            folder: "prizing",
+          });
+          image = result.secure_url;
+          console.log("Cloudinary URL:", image);
+        }
 
         if (!itemName || !amount || !description || !image) {
             return res.status(400).json({
@@ -81,7 +96,15 @@ export const updatePrizing = async (req, res) => {
     try {
         const { id } = req.params;
         const { itemName, amount, description, category, discount, badge, colour, stock, active } = req.body;
-        const image = req.file ? req.file.path : undefined;
+        let image = undefined;
+        if (req.file) {
+          const b64 = `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`;
+          const result = await cloudinary.uploader.upload(b64, {
+            folder: "prizing",
+          });
+          image = result.secure_url;
+          console.log("Cloudinary URL:", image);
+        }
 
         const product = await Prizing.findByPk(id);
         if (!product) {
