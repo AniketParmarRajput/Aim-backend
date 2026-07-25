@@ -77,6 +77,19 @@ export const deleteEmployee = async (req, res) => {
   }
 }
 
+export const getByEmail = async (req, res) => {
+  try {
+    const { email } = req.params;
+    const user = await User.findOne({ where: { email } });
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+    return res.status(200).json({ success: true, data: user });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 export const getByEmployeeID = async (req,res) =>{
   console.log(req.params);
   try{
@@ -103,4 +116,4 @@ return res.status(500).json({success:false, message:error.message})
 // =============================
 // Export as default object
 // =============================
-export default { getEmployees, createEmployee, deleteEmployee,getByEmployeeID , updatePassword};
+export default { getEmployees, createEmployee, deleteEmployee, getByEmail, getByEmployeeID, updatePassword };
