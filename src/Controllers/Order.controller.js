@@ -3,14 +3,15 @@ import Prizing from "../Model/Prizing.model.js";
 
 export const createOrder = async (req, res) => {
   try {
-    const { email, itemName, sku, price, quantity, paymentMethod, productId, address, mobile } = req.body;
+    const { email, itemName, sku, price, quantity, paymentMethod, productId, address, mobile, state, district, pincode } = req.body;
 
     if (!email || !itemName || !sku || !price) {
       return res.status(400).json({ success: false, message: "Missing required fields" });
     }
 
     const deliveryDate = "7 days";
-    const status = paymentMethod === "cash on delivery" ? "confirmed" : "pending";
+    const method = paymentMethod === "online" ? "online" : "cash on delivery";
+    const status = method === "online" ? "pending" : "confirmed";
 
     const order = await Order.create({
       email,
@@ -18,11 +19,14 @@ export const createOrder = async (req, res) => {
       sku,
       price,
       quantity: quantity || 1,
-      paymentMethod: paymentMethod || "cash on delivery",
+      paymentMethod: method,
       status,
       deliveryDate,
       address: address || null,
       mobile: mobile || null,
+      state: state || null,
+      district: district || null,
+      pincode: pincode || null,
     });
 
     if (productId) {
@@ -61,7 +65,7 @@ export const getOrdersByEmail = async (req, res) => {
 export const updateOrder = async (req, res) => {
   try {
     const { id } = req.params;
-    const { quantity, deliveryDate, status, address, mobile } = req.body;
+    const { quantity, deliveryDate, status, address, mobile, state, district, pincode } = req.body;
     const order = await Order.findByPk(id);
     if (!order) return res.status(404).json({ success: false, message: "Order not found" });
 
@@ -74,6 +78,9 @@ export const updateOrder = async (req, res) => {
     if (status !== undefined) order.status = status;
     if (address !== undefined) order.address = address;
     if (mobile !== undefined) order.mobile = mobile;
+    if (state !== undefined) order.state = state;
+    if (district !== undefined) order.district = district;
+    if (pincode !== undefined) order.pincode = pincode;
     await order.save();
 
     return res.status(200).json({ success: true, message: "Order updated successfully", data: order });
