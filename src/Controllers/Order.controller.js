@@ -3,10 +3,24 @@ import Prizing from "../Model/Prizing.model.js";
 
 export const createOrder = async (req, res) => {
   try {
-    const { email, itemName, sku, price, quantity, paymentMethod, productId, address, mobile, state, district, pincode } = req.body;
+    const { email, itemName, sku, price, quantity, paymentMethod, productId, address, mobile, state, district, pincode, image } = req.body;
 
     if (!email || !itemName || !sku || !price) {
       return res.status(400).json({ success: false, message: "Missing required fields" });
+    }
+
+    if (productId) {
+      const product = await Prizing.findByPk(productId);
+      if (!product) {
+        return res.status(404).json({ success: false, message: `Product "${itemName}" not found` });
+      }
+      const requestedQty = quantity || 1;
+      if ((product.stock || 0) < requestedQty) {
+        return res.status(400).json({
+          success: false,
+          message: `Insufficient stock for "${itemName}". Available: ${product.stock}, requested: ${requestedQty}`
+        });
+      }
     }
 
     const deliveryDate = "7 days";
@@ -22,6 +36,7 @@ export const createOrder = async (req, res) => {
       paymentMethod: method,
       status,
       deliveryDate,
+      image: image || null,
       address: address || null,
       mobile: mobile || null,
       state: state || null,
@@ -32,7 +47,7 @@ export const createOrder = async (req, res) => {
     if (productId) {
       const product = await Prizing.findByPk(productId);
       if (product) {
-        const newStock = Math.max(0, (product.stock || 0) - (quantity || 1));
+        const newStock = product.stock - (quantity || 1);
         await product.update({ stock: newStock });
       }
     }
