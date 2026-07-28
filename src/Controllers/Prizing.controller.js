@@ -18,7 +18,7 @@ const generateSku = async (itemName, category) => {
 
 export const addPrizing = async (req, res) => {
     try {
-        const { itemName, amount, description, category, discount, badge, colour, stock, sku: bodySku, active: bodyActive } = req.body;
+        const { itemName, amount, description, category, discount, badge, colour, stock, sku: bodySku, active: bodyActive, imageUrl } = req.body;
 
         let image = null;
         if (req.file) {
@@ -28,6 +28,8 @@ export const addPrizing = async (req, res) => {
           });
           image = result.secure_url;
           console.log("Cloudinary URL:", image);
+        } else if (imageUrl) {
+          image = imageUrl;
         }
 
         if (!itemName || !amount || !description || !image) {
@@ -95,7 +97,7 @@ export const getPrizing = async(req,res) =>{
 export const updatePrizing = async (req, res) => {
     try {
         const { id } = req.params;
-        const { itemName, amount, description, category, discount, badge, colour, stock, active } = req.body;
+        const { itemName, amount, description, category, discount, badge, colour, stock, active, imageUrl } = req.body;
         let image = undefined;
         if (req.file) {
           const b64 = `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`;
@@ -104,6 +106,8 @@ export const updatePrizing = async (req, res) => {
           });
           image = result.secure_url;
           console.log("Cloudinary URL:", image);
+        } else if (imageUrl) {
+          image = imageUrl;
         }
 
         const product = await Prizing.findByPk(id);
