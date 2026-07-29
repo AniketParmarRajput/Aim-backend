@@ -18,8 +18,18 @@ import orderRoutes from "./src/Routes/orderRoute.js";
 import db from "./src/Model/index.js";
 
 const app = express();
+const allowedOrigins = [
+  "https://aim-alpha-hazel.vercel.app",
+];
+
 app.use(cors({
-  origin: ["http://localhost:3001", "https://aim-alpha-hazel.vercel.app"],
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin) || /^http:\/\/localhost(:\d+)?$/.test(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
