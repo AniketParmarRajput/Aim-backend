@@ -13,6 +13,7 @@ const app = express();
 
 const allowedOrigins = [
   "https://aim-alpha-hazel.vercel.app",
+  "http://localhost:3001"
 ];
 
 app.use(cors({
@@ -33,6 +34,9 @@ app.use(cors({
 app.use(express.json());
 app.use(cookieParser());
 
+app.get("/test",(req,res) =>{
+  res.send("hello")
+})
 app.use("/api/employees", userRoutes);
 app.use("/api/login", userlogin);
 app.use("/api/prizing", prizingRoutes);
