@@ -13,7 +13,7 @@ export default async function handler(req, res) {
       console.log("Database Connected");
       connected = true;
     } catch (err) {
-      console.error(err);
+      console.error("DB Connection Error:", err);
       return res.status(500).json({
         success: false,
         message: "Database Connection Failed",
@@ -22,5 +22,14 @@ export default async function handler(req, res) {
     }
   }
 
-  return app(req, res);
+  try {
+    return app(req, res);
+  } catch (err) {
+    console.error("Handler Error:", err);
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+      error: err.message,
+    });
+  }
 }
