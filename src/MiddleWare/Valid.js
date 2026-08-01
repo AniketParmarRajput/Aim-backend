@@ -3,8 +3,9 @@ import Joi from "joi";
 const signupSchema = Joi.object({
   name: Joi.string().min(2).max(50).required(),
   email: Joi.string().email().required(),
-  role: Joi.string().required(),
-  position: Joi.string().required(),
+  role: Joi.string().optional(),
+  position: Joi.string().optional(),
+  mobile: Joi.string().optional(),
   password: Joi.string().min(8).required()
 });
 const loginSchema = Joi.object({
