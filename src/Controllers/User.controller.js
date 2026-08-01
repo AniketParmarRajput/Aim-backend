@@ -20,17 +20,24 @@ export const getEmployees = async (req, res) => {
 // =============================
 export const createEmployee = async (req, res) => {
   try {
-    const { name, email, role, position, password } = req.body;
+    const { name, email, role, position, password, mobile } = req.body;
 console.log(req.body);
     // Validate required fields
-    if (!name || !email || !role || !position || !password) {
+    if (!name || !email || !password) {
       return res
         .status(400)
-        .json({ success: false, message: "All fields are required" });
+        .json({ success: false, message: "Name, email and password are required" });
     }
 
     // Create employee
-    const newEmployee = await User.create({ name, email, role, position, password });
+    const newEmployee = await User.create({
+      name,
+      email,
+      role: role || "customer",
+      position: position || "Customer",
+      password,
+      mobile: mobile || null,
+    });
     
      await sendWelcomeEmail(
       email,
