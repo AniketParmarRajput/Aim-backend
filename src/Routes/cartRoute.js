@@ -5,7 +5,7 @@ import {
   updateCart,
   removeFromCart,
   clearCart,
-} from "../Controllers/Cart.controller.js";
+} from "../Controllers/AddToCart.controller.js";
 
 const router = express.Router();
 
