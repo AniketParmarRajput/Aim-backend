@@ -8,6 +8,7 @@ import prizingRoutes from "./src/Routes/prizingRoute.js";
 import ContactRouter from "./src/Routes/contactRoute.js";
 import paypalRoutes from "./src/Routes/paypalRoute.js";
 import orderRoutes from "./src/Routes/orderRoute.js";
+import cartRoutes from "./src/Routes/cartRoute.js";
 
 const app = express();
 
@@ -43,5 +44,6 @@ app.use("/api/prizing", prizingRoutes);
 app.use("/api/contact", ContactRouter);
 app.use("/api/paypal", paypalRoutes);
 app.use("/api/order", orderRoutes);
+app.use("/api/cart", cartRoutes);
 
 export default app;
