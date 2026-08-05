@@ -77,6 +77,17 @@ export const getOrdersByEmail = async (req, res) => {
   }
 };
 
+export const getOrderById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const order = await Order.findByPk(id);
+    if (!order) return res.status(404).json({ success: false, message: "Order not found" });
+    return res.status(200).json({ success: true, data: order });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 export const updateOrder = async (req, res) => {
   try {
     const { id } = req.params;
@@ -124,4 +135,4 @@ export const cancelOrder = async (req, res) => {
   }
 };
 
-export default { createOrder, getOrders, getOrdersByEmail, updateOrder, cancelOrder };
+export default { createOrder, getOrders, getOrdersByEmail, getOrderById, updateOrder, cancelOrder };
