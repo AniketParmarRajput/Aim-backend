@@ -23,7 +23,7 @@ export const createOrder = async (req, res) => {
       }
     }
 
-    const deliveryDate = "7 days";
+    const deliveryDate = req.body.deliveryDate || "7 days";
     const method = paymentMethod === "online" ? "online" : "cash on delivery";
     const status = method === "online" ? "pending" : "confirmed";
 
