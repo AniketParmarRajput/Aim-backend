@@ -9,6 +9,8 @@ import ContactRouter from "./src/Routes/contactRoute.js";
 import paypalRoutes from "./src/Routes/paypalRoute.js";
 import orderRoutes from "./src/Routes/orderRoute.js";
 import cartRoutes from "./src/Routes/cartRoute.js";
+import wishlistRoutes from "./src/Routes/wishlistRoute.js";
+import geminiRoutes from "./src/Routes/geminiRoute.js";
 
 const app = express();
 
@@ -45,5 +47,7 @@ app.use("/api/contact", ContactRouter);
 app.use("/api/paypal", paypalRoutes);
 app.use("/api/order", orderRoutes);
 app.use("/api/cart", cartRoutes);
+app.use("/api/wishlist", wishlistRoutes);
+app.use("/api/gemini", geminiRoutes);
 
 export default app;
