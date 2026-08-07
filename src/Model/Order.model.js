@@ -9,9 +9,13 @@ const Order = sequelize.define(
       autoIncrement: true,
       primaryKey: true,
     },
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
     email: {
       type: DataTypes.STRING(255),
-      allowNull: false,
+      allowNull: true,
     },
     itemName: {
       type: DataTypes.STRING(255),

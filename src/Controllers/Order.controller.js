@@ -3,9 +3,9 @@ import Prizing from "../Model/Prizing.model.js";
 
 export const createOrder = async (req, res) => {
   try {
-    const { email, itemName, sku, price, quantity, paymentMethod, productId, address, mobile, state, district, pincode, image } = req.body;
+    const { email, userId, itemName, sku, price, quantity, paymentMethod, productId, address, mobile, state, district, pincode, image } = req.body;
 
-    if (!email || !itemName || !sku || !price) {
+    if (!userId || !itemName || !sku || !price) {
       return res.status(400).json({ success: false, message: "Missing required fields" });
     }
 
@@ -28,7 +28,8 @@ export const createOrder = async (req, res) => {
     const status = method === "online" ? "pending" : "confirmed";
 
     const order = await Order.create({
-      email,
+      userId,
+      email: email || null,
       itemName,
       sku,
       price,
@@ -61,6 +62,16 @@ export const createOrder = async (req, res) => {
 export const getOrders = async (req, res) => {
   try {
     const orders = await Order.findAll({ order: [["id", "DESC"]] });
+    return res.status(200).json({ success: true, data: orders });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+export const getOrdersByUserId = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const orders = await Order.findAll({ where: { userId }, order: [["id", "DESC"]] });
     return res.status(200).json({ success: true, data: orders });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
@@ -135,4 +146,4 @@ export const cancelOrder = async (req, res) => {
   }
 };
 
-export default { createOrder, getOrders, getOrdersByEmail, getOrderById, updateOrder, cancelOrder };
+export default { createOrder, getOrders, getOrdersByUserId, getOrdersByEmail, getOrderById, updateOrder, cancelOrder };
