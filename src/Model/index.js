@@ -5,6 +5,7 @@ import PaypalPayment from "./Paypal.mode.js";
 import Order from "./Order.model.js";
 import Cart from "./Cart.model.js";
 import Wishlist from "./Wishlist.model.js";
+import Practice from "./Practice.model.js";
 
 const db = {};
 db.sequelize = sequelize;
@@ -14,6 +15,7 @@ db.PaypalPayment = PaypalPayment;
 db.Order = Order;
 db.Cart = Cart;
 db.Wishlist = Wishlist;
+db.Practice = Practice;
 
 export default db;
 

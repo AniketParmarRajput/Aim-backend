@@ -10,6 +10,7 @@ import paypalRoutes from "./src/Routes/paypalRoute.js";
 import orderRoutes from "./src/Routes/orderRoute.js";
 import cartRoutes from "./src/Routes/cartRoute.js";
 import wishlistRoutes from "./src/Routes/wishlistRoute.js";
+import practiceRoutes from "./src/Routes/practiceRoute.js";
 
 const app = express();
 
@@ -47,5 +48,6 @@ app.use("/api/paypal", paypalRoutes);
 app.use("/api/order", orderRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/wishlist", wishlistRoutes);
+app.use("/api/practices", practiceRoutes);
 
 export default app;
