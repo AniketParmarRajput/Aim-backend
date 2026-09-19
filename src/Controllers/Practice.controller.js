@@ -30,8 +30,8 @@ const calcNextAvailable = (from, cooldown) => {
 export const addPractice = async (req, res) => {
   try {
     const { category, question, description, questionType, solution, cooldown, questionImageUrl, questionPdfUrl, questionVideoUrl, solutionImageUrl, solutionPdfUrl, solutionVideoUrl } = req.body;
-    if (!category || !question || !description) {
-      return res.status(400).json({ success: false, message: "category, question and description are required" });
+    if (!category || !question) {
+      return res.status(400).json({ success: false, message: "category and question are required" });
     }
     const type = questionType && ["practical", "theory"].includes(questionType) ? questionType : "practical";
     const cd = cooldown && ["1day", "1week"].includes(cooldown) ? cooldown : "1day";
@@ -63,7 +63,7 @@ export const addPractice = async (req, res) => {
     const practice = await Practice.create({
       category,
       question,
-      description,
+      description: description || null,
       questionType: type,
       solution: solution || null,
       status: "pending",
@@ -114,7 +114,7 @@ export const updatePractice = async (req, res) => {
     const updateData = {};
     if (category !== undefined) updateData.category = category;
     if (question !== undefined) updateData.question = question;
-    if (description !== undefined) updateData.description = description;
+    if (description !== undefined) updateData.description = description || null;
     if (questionType !== undefined && ["practical", "theory"].includes(questionType)) updateData.questionType = questionType;
     if (solution !== undefined) updateData.solution = solution;
     if (cooldown !== undefined && ["1day", "1week"].includes(cooldown)) updateData.cooldown = cooldown;
