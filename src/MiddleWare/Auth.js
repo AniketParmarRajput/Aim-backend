@@ -1,7 +1,10 @@
 import jwt from "jsonwebtoken";
 
 const isverify = (req, res, next) => {
-    const token = req.cookies?.token;
+    // Support: httpOnly cookie `token`, JS-accessible `access_token`, and Authorization: Bearer <token>
+    const authHeader = req.headers.authorization;
+    const bearerToken = authHeader?.startsWith("Bearer ") ? authHeader.split(" ")[1] : null;
+    const token = req.cookies?.token || req.cookies?.access_token || bearerToken;
 
     if (!token) {
         return res.status(401).json({
