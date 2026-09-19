@@ -19,7 +19,7 @@ const Practice = sequelize.define(
     },
     description: {
       type: DataTypes.TEXT,
-      allowNull: false,
+      allowNull: true,
     },
     questionType: {
       type: DataTypes.ENUM("practical", "theory"),
