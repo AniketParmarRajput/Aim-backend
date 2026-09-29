@@ -1,6 +1,6 @@
 import rateLimit from "express-rate-limit";
 
-const ApiLimited =rateLimit({
+const ApiLimit =rateLimit({
     windowMs: 60 * 60 * 1000,
     max:100,
      message: {
@@ -10,4 +10,4 @@ const ApiLimited =rateLimit({
    standardHeaders: true,
   legacyHeaders: false,
 });
- export default  ApiLimited;
+ export default  ApiLimit;
