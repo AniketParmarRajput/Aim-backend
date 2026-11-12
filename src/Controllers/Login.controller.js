@@ -22,16 +22,6 @@ const setTokens = (res, user) => {
 
   const isProd = process.env.NODE_ENV === "production";
 
-  // 1. Secure httpOnly cookies — used by Auth middleware (req.cookies.token)
-  //    Cannot be accessed via JS -> XSS safe. Sent automatically via credentials: "include"
-  res.cookie("token", accessToken, {
-    httpOnly: true,
-    secure: isProd, // true in production (HTTPS) - false for localhost HTTP
-    sameSite: "lax",
-   //  maxAge: 7 * 60 * 60 * 1000, // 7 hours
-     maxAge: 1 * 60 * 1000, // 1 minute
-    path: "/",
-  });
 
   res.cookie("refreshToken", refreshToken, {
     httpOnly: true,
@@ -49,14 +39,6 @@ const setTokens = (res, user) => {
     sameSite: "lax",
    //  maxAge: 7 * 60 * 60 * 1000,
    maxAge: 1 * 60 * 1000, // 1 minute
-    path: "/",
-  });
-
-  res.cookie("refresh_token", refreshToken, {
-    httpOnly: false,
-    secure: isProd,
-    sameSite: "lax",
-    maxAge: 7 * 24 * 60 * 60 * 1000,
     path: "/",
   });
 
@@ -163,17 +145,11 @@ export const refreshToken = async (req, res) => {
       }
 
        // Issue a fresh access token + refresh token (renews to full 7 days)
-       const { accessToken, refreshToken: newRefreshToken } = setTokens(res, user);
+       const { accessToken } = setTokens(res, user);
 
        return res.status(200).json({
           message: "Token refreshed successfully",
           accessToken,
-          user: {
-             id: user.id,
-             name: user.name,
-             email: user.email,
-             role: user.role,
-          },
        });
    } catch (err) {
       console.log(err);
