@@ -11,7 +11,7 @@ const setTokens = (res, user) => {
   const accessToken = jwt.sign(
     { id: user.id, email: user.email, role: user.role },
     SECRET,
-    { expiresIn: "7h" } // access token valid for 7 hours
+    { expiresIn: "1m" } // access token valid for 7 hours
   );
 
   const refreshToken = jwt.sign(
@@ -28,7 +28,8 @@ const setTokens = (res, user) => {
     httpOnly: true,
     secure: isProd, // true in production (HTTPS) - false for localhost HTTP
     sameSite: "lax",
-    maxAge: 7 * 60 * 60 * 1000, // 7 hours
+   //  maxAge: 7 * 60 * 60 * 1000, // 7 hours
+     maxAge: 1 * 60 * 1000, // 1 minute
     path: "/",
   });
 
@@ -46,7 +47,8 @@ const setTokens = (res, user) => {
     httpOnly: false, // <- accessible via document.cookie / js-cookie
     secure: isProd,
     sameSite: "lax",
-    maxAge: 7 * 60 * 60 * 1000,
+   //  maxAge: 7 * 60 * 60 * 1000,
+   maxAge: 1 * 60 * 1000, // 1 minute
     path: "/",
   });
 
@@ -79,7 +81,7 @@ export const checkUser = async (req, res) => {
          const errorToken = jwt.sign(
             { invalid: true, reason: "email" },
             SECRET,
-            { expiresIn: "5d" }
+            { expiresIn: "1m" }
          );
          return res.status(400).json({
             message: "Email not found",
@@ -92,7 +94,7 @@ export const checkUser = async (req, res) => {
          const errorToken = jwt.sign(
             { invalid: true, reason: "password" },
             SECRET,
-            { expiresIn: "5d" }
+            { expiresIn: "1m" }
          );
          return res.status(400).json({
             message: "Password not found",
@@ -165,9 +167,7 @@ export const refreshToken = async (req, res) => {
 
        return res.status(200).json({
           message: "Token refreshed successfully",
-          token: accessToken, // keep backward compat
           accessToken,
-          refreshToken: newRefreshToken,
           user: {
              id: user.id,
              name: user.name,

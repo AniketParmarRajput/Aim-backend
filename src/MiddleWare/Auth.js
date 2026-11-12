@@ -1,10 +1,10 @@
 import jwt from "jsonwebtoken";
 
-const isverify = (req, res, next) => {
-    // Support: httpOnly cookie `token`, JS-accessible `access_token`, and Authorization: Bearer <token>
+ export const isAuthenticated = (req, res, next) => {
+    // Support: Authorization: Bearer <token>, httpOnly cookie `token`, JS cookie `access_token`
     const authHeader = req.headers.authorization;
     const bearerToken = authHeader?.startsWith("Bearer ") ? authHeader.split(" ")[1] : null;
-    const token = req.cookies?.token || req.cookies?.access_token || bearerToken;
+    const token = bearerToken || req.cookies?.token || req.cookies?.access_token;
 
     if (!token) {
         return res.status(401).json({
@@ -27,5 +27,3 @@ const isverify = (req, res, next) => {
         });
     }
 };
-
-export default isverify;
